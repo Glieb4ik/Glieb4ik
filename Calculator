@@ -1,0 +1,138 @@
+// Made by Glieb4ik in collab with ChatGpt
+// NEVER TRY TO SOLVE 2+2 HERE!!!
+
+#include <iostream>
+#include <string>
+#include <windows.h>
+#include <cstdlib>
+#include <ctime>
+#include <thread>
+#include <chrono>
+#include <vector>
+#include <sstream>
+
+using namespace std;
+
+void fakeCrashEffect() {
+    srand(time(0));
+
+    system("cls");
+    cout << "\nО нет... я же не знаю это...\n";
+    this_thread::sleep_for(chrono::milliseconds(1500));
+
+    int width = 120;
+    int height = 40;
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            char c = 33 + rand() % 94;
+            cout << c;
+        }
+        cout << "\n";
+    }
+
+    this_thread::sleep_for(chrono::milliseconds(500));
+
+    for (int step = 0; step < 30; step++) {
+        system("cls");
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (rand() % 200 == 0) {
+                    string messages[] = { "42?", "LOL?", "ERROR", "???", "0", "∞", "123" };
+                    string msg = messages[rand() % 7];
+                    cout << msg;
+                    j += msg.length() - 1;
+                }
+                else if (rand() % (step + 1) == 0) {
+                    char c = 33 + rand() % 94;
+                    cout << c;
+                }
+                else {
+                    cout << " ";
+                }
+            }
+            cout << "\n";
+        }
+        this_thread::sleep_for(chrono::milliseconds(100));
+    }
+
+    cout << "\n\n ERROR! 404!\n";
+    cout << "\n\n!!! SYSTEM FAILURE !!!\n";
+    abort();
+}
+
+string randomPhrase() {
+    vector<string> phrases = {
+        "Легкотня 😎",
+        "Слишком просто 🤯",
+        "Ха, это же детский уровень!",
+        "Опять задачи для дошкольников?",
+        "Я так и знал 😏",
+        "Легко как 1+1",
+        "Ты вообще пробовал сложное?"
+    };
+    return phrases[rand() % phrases.size()];
+}
+
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+
+    srand(time(0));
+
+    string expr;
+
+    while (true) {
+        cout << "Введите ваш пример: ";
+        getline(cin, expr);
+
+        expr.erase(remove(expr.begin(), expr.end(), ' '), expr.end());
+
+        if (expr == "2+2") {
+            fakeCrashEffect();
+            break;
+        }
+        else {
+            size_t pos = string::npos;
+            char op = 0;
+
+            for (char possibleOp : {'+', '-', '*', '/'}) {
+                pos = expr.find(possibleOp);
+                if (pos != string::npos) {
+                    op = possibleOp;
+                    break;
+                }
+            }
+
+            if (pos != string::npos) {
+                try {
+                    int a = stoi(expr.substr(0, pos));
+                    int b = stoi(expr.substr(pos + 1));
+
+                    if (op == '+') cout << "Ответ: " << a + b << endl;
+                    else if (op == '-') cout << "Ответ: " << a - b << endl;
+                    else if (op == '*') cout << "Ответ: " << a * b << endl;
+                    else if (op == '/') {
+                        if (b == 0) {
+                            cout << "Ошибка: деление на ноль!\n";
+                            continue;
+                        }
+                        else {
+                            cout << "Ответ: " << a / b << endl;
+                        }
+                    }
+                    cout << randomPhrase() << "\n\n";
+                }
+                catch (...) {
+                    cout << "Ошибка в формате примера\n\n";
+                }
+            }
+            else {
+                cout << "Я умею только операции: + - * /\n\n";
+            }
+        }
+    }
+
+    return 0;
+}
